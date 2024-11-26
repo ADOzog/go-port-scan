@@ -1,12 +1,12 @@
 package main
-import ("net"; "fmt"; "flag"; "strconv"; "strings")
+import ("net"; "fmt"; "flag"; "strconv"; "strings"; "time")
 
 
 // this will need to run multiple "Dial" functions for each port
-func Port_Scan (network_connection string, IP_ports string) (net.Conn,error){
+func Port_Scan (network_connection string, IP_ports string, timeout_duration time.Duration) (net.Conn,error){
   // IP ports will be an array of strings in the future 
   
-  conn , err := net.Dial(network_connection , IP_ports)
+  conn , err := net.DialTimeout(network_connection , IP_ports, timeout_duration)
   return conn , err
 
 
@@ -30,6 +30,7 @@ func main (){
   // var single_port int
   var multiple_ports_string_form string
   var multiple_ports_array []int
+  var timeout_int int
   // var set_of_ports [...]int
 
   var IP string
@@ -46,13 +47,13 @@ func main (){
 
   flag.StringVar(&multiple_ports_string_form, "Sm", "", "Sm is used to scan multiple ports, just write each port you would like scan seperated by spaces and surrounded by '' ")
 
-
+  flag.IntVar(&timeout_int, "T", 5, "T is used to set the amout of time till a port is considered failed to connect")
   // Make sure no flags appear after this line######################################################################### 
   //###################################################################################################################
   flag.Parse()
 
 
-  
+  timeout_duration := time.Duration(timeout_int) * time.Second
 
   multiple_ports_array_of_strings := strings.Fields(multiple_ports_string_form)
   for _,port_string := range multiple_ports_array_of_strings{
@@ -79,7 +80,7 @@ func main (){
   Array_IP_ports := IP_port_maker(multiple_ports_array , IP)
 
   for _,IP_port := range Array_IP_ports{ 
-  conn , err := Port_Scan( network_connection, IP_port)
+  conn , err := Port_Scan( network_connection, IP_port, timeout_duration)
   if err != nil {
     fmt.Println("You had an error")
     fmt.Println(err)
