@@ -17,6 +17,9 @@ func Port_Scan (network_connection string, IP_ports string, timeout_duration tim
     //     fmt.Println(err)
     //   }
     // }
+    if err != nil {
+    fmt.Println(err)
+  }  
     if conn != nil {
       fmt.Println("Successfully connected to:", conn.RemoteAddr())
     }
