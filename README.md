@@ -8,3 +8,6 @@ Finally, I want to use concurrency to make it faster.(11-26-24)
 Added Scan All fucntion (12-1-24)
 
 I am going into this project knowing that nmap does all of this and does it to a much greater degree, but this project will help me to understand what is going on at fundmental level.
+
+
+Adding some kind of database with this would help the user with the information they receive. I will have to see how I implement this feature.
